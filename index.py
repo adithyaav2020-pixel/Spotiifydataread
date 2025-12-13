@@ -46,7 +46,10 @@ def get_new_release():
                     'album_name': album['name'],
                     'artist_name' : album['artists'][0]['name'],
                     'release_date' : album['release_date'],
-                    'album_type' : album['album_type']
+                    'album_type' : album['album_type'],
+                    'total_tracks' : album['total_tracks'],
+                    'spotify_url' : album['external_urls']['spotify'],
+                    'album_image' : album['image'][0]['url'] if album['images'] else None 
                 }
                 print(json.dumps(info,intent=2))
                 print("*" * 30)          
