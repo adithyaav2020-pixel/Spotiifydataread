@@ -2,6 +2,7 @@ import base64
 import requests
 from dotenv import load_dotenv
 import os
+import json
 
 load_dotenv('.env_local')
 CLIENT_ID = os.getenv('CLIENT_ID')
@@ -13,20 +14,20 @@ def access_token():
         encoded_credentials =base64.b64encode(credentials.encode()).decode()
         response = requests.post(
             'https://accounts.spotify.com/api/token',
-            headers={'Authorization': f'Basic {encoded_credentials}'},
+            headers={'Authorization': f"Basic {encoded_credentials}"},
             data={'grant_type': 'client_credentials'}
         )
-        # print(response.json())
-        # print(response.json()['access_token'])
+        print(response.json())
+        print(response.json()['access_token'])
 
-        # print("Token generated successfully...")
-        return response.json()['access_token']
+#         # print("Token generated successfully...")
+#         return response.json()['access_token']
     except Exception as e:
         print("Error in Token Generation..",e)    
 print(access_token())
 
 
-# latest release in spotify
+# # latest release in spotify
 
 def get_new_release():
     try:
@@ -39,15 +40,16 @@ def get_new_release():
             # print(response.json())
             data = response.json()
             albums = data['albums']['items']
-            for i in albums:
-                a = {
-                    'album_name':i['name'],
-                    'Release_date' :i['release_date']
-
-                }   
-                print(a)
-
-
+            for album in albums:
+                # print(album)
+                info = {
+                    'album_name': album['name'],
+                    'artist_name' : album['artists'][0]['name'],
+                    'release_date' : album['release_date'],
+                    'album_type' : album['album_type']
+                }
+                print(json.dumps(info,intent=2))
+                print("*" * 30)          
     except Exception as e:
         print("Error in latest relesed data fetching..",e)
 #     print(response)
