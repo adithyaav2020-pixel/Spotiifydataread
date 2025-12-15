@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 import json
 
-load_dotenv('.env_local')
+load_dotenv('.env')
 CLIENT_ID = os.getenv('CLIENT_ID')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 
@@ -17,14 +17,15 @@ def access_token():
             headers={'Authorization': f"Basic {encoded_credentials}"},
             data={'grant_type': 'client_credentials'}
         )
-        print(response.json())
-        print(response.json()['access_token'])
+        # print(response.json())
+        # print(response.json()['access_token'])
 
 #         # print("Token generated successfully...")
-#         return response.json()['access_token']
+        return response.json()['access_token']
     except Exception as e:
-        print("Error in Token Generation..",e)    
-print(access_token())
+        print("Error in Token Generation..",e)  
+
+# print(access_token())
 
 
 # # latest release in spotify
@@ -49,9 +50,9 @@ def get_new_release():
                     'album_type' : album['album_type'],
                     'total_tracks' : album['total_tracks'],
                     'spotify_url' : album['external_urls']['spotify'],
-                    'album_image' : album['image'][0]['url'] if album['images'] else None 
+                    'album_image' : album['images'][0]['url'] if album['images'] else None 
                 }
-                print(json.dumps(info,intent=2))
+                print(json.dumps(info,indent=2))
                 print("*" * 30)          
     except Exception as e:
         print("Error in latest relesed data fetching..",e)
