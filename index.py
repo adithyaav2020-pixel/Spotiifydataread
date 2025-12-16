@@ -36,7 +36,7 @@ def get_new_release():
         header = {'Authorization': f'Bearer {token}'}
         Param = {'limit':50}
         response = requests.get('https://api.spotify.com/v1/browse/new-releases',headers=header,params=Param)
-
+        release = []
         if response.status_code == 200:
             # print(response.json())
             data = response.json()
@@ -52,11 +52,19 @@ def get_new_release():
                     'spotify_url' : album['external_urls']['spotify'],
                     'album_image' : album['images'][0]['url'] if album['images'] else None 
                 }
-                print(json.dumps(info,indent=2))
-                print("*" * 30)          
+
+                release.append(info)
+            with open('spotify.json', 'w',encoding='utf-8' ) as f:
+                (json.dump(release, f, indent=2))
+                # print("*" * 30)          
+                print('json data saved  to spotify .json')
     except Exception as e:
         print("Error in latest relesed data fetching..",e)
 #     print(response)
 #     print(response.json())
 
 get_new_release()       
+
+
+#to save json
+       
